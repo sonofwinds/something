@@ -75,20 +75,26 @@ public class MyLinkList<T>{
 	 return first.value;
  }
  
- public MyLinkList<Integer> hebing(Node<Integer> linkhead1, Node<Integer> linkhead2){
-	Node<Integer> indexNode = linkhead1;
+ public Node<Integer> hebing(Node<Integer> linkhead1, Node<Integer> linkhead2){
+	Node<Integer> newNode = new Node(null,-1);
 	//以linkhead1为蓝本
-	while(linkhead2 != null) {
-		if(linkhead2.value >= indexNode.value) {
-			indexNode.nextNode = linkhead2;
-			linkhead2 = linkhead2.nextNode;
-			indexNode = linkhead2;
+	while(linkhead1 != null && linkhead2 != null) { 
+		if(linkhead1.value < linkhead2.value) {
+			newNode.nextNode = linkhead1;
+			newNode = linkhead1;
+			linkhead1 = linkhead1.nextNode;
 		}else {
-			
+			newNode.nextNode = linkhead2;
+			newNode = linkhead2;
+			linkhead2 = linkhead2.nextNode;
 		}
 	}
-	
-	return null;
+	if(linkhead1 == null && linkhead2 != null) {
+		newNode.nextNode = linkhead2;
+	}else if(linkhead2 == null && linkhead1 != null){
+		newNode.nextNode = linkhead1;
+	}
+	return newNode.nextNode;
  }
  public boolean checkIndex(int index) {
 	 if(size == 0 || index > size-1) {

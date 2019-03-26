@@ -3,8 +3,8 @@ package sort;
 public class SortMain {
 
 	public static void main(String[] args) {
-       int[] a = {3,5,1,88,99,44,64,22,6,34};
-       a = quickSort(a,0,a.length-1);
+       int[] a = {4,6,8,5,9};
+       a = heapSort(a);
        for(int i=0;i<a.length;i++) {
 			System.out.println(a[i]);
 		}
@@ -182,5 +182,79 @@ public class SortMain {
 		}
 		maopaoSort(a, index-1);
 		return a;
+	}
+	
+	/**
+	 * 堆排序（https://www.cnblogs.com/chengxiao/p/6129630.html）
+	 * a.将无需序列构建成一个堆，根据升序降序需求选择大顶堆或小顶堆;
+　　      * b.将堆顶元素与末尾元素交换，将最大元素"沉"到数组末端;
+　　      * c.重新调整结构，使其满足堆定义，然后继续交换堆顶元素与当前末尾元素，反复执行调整+交换步骤，直到整个序列有序。
+	 */
+	public static int[] heapSort(int[] arr) {
+		for(int i = 0 ;i<arr.length;i++) {
+			//从最左边的非叶子节点开始遍历,构造最大堆
+			ajustHeap(arr,  (arr.length-i)/ 2 - 1);
+			//首尾交换，将最大数沉入到尾部
+			int tailData = arr[arr.length-1-i];
+			arr[arr.length-1-i] = arr[0];
+			arr[0] = tailData;
+		}
+		return arr;
+	}
+	
+	/**
+	 * 初始化堆
+	 * @param a
+	 */
+	public static void ajustHeap(int[] arr,int index) {
+		if(index < 0) {
+			return;
+		}
+		int leftindex = 2 * index + 1;
+		int rightindex = 2 * index + 2;
+		if(leftindex < arr.length) {
+			if(arr[index] < arr[leftindex]) {
+				swap(arr, index, leftindex);
+			}
+		}
+		if(rightindex < arr.length) {
+			if(arr[index] < arr[rightindex]) {
+				swap(arr, index, rightindex);
+			}
+		}
+		ajustHeap(arr, index - 1);
+	}
+	
+	public static void swap(int[] arr ,int index1,int index2) {
+		int index1Temp = arr[index1];
+		int index2Temp = arr[index2];
+		arr[index1] = index2Temp;
+		arr[index2] = index1Temp;
+		//递归重新调整子节点
+		tiaozheng(arr, index2);
+	}
+	public static void swap2(int[] arr ,int index1,int index2) {
+		int index1Temp = arr[index1];
+		int index2Temp = arr[index2];
+		arr[index1] = index2Temp;
+		arr[index2] = index1Temp;
+		tiaozheng(arr, index2);
+	}
+	public static void tiaozheng(int[] arr,int topindex) {
+		if(topindex>=arr.length) {
+			return;
+		}
+		int leftindex = 2 * topindex + 1;
+		int rightindex = 2 * topindex + 2;
+		if(leftindex < arr.length) {
+			if(arr[topindex] < arr[leftindex]) {
+				swap2(arr, topindex, leftindex);
+			}
+		}
+		if(rightindex < arr.length) {
+			if(arr[topindex] < arr[rightindex]) {
+				swap2(arr, topindex, rightindex);
+			}
+		}
 	}
 }
