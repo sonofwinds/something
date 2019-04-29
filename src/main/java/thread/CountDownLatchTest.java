@@ -1,6 +1,7 @@
 package thread;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 /**
  * 适用于一个任务需要等待另外一个或者另外一组任务执行完成之后才能继续执行的场景
  * @author 晨
@@ -17,8 +18,8 @@ public class CountDownLatchTest {
 		}
 		try {
 			System.out.println("等待其他任务结束");
-			latch.await();//用await()方法的线程会被挂起，它会等待直到count值为0才继续执行
-			System.out.println("其他任务结束,开始干活");
+			boolean flag = latch.await(5,TimeUnit.SECONDS);//用await()方法的线程会被挂起，它会等待直到count值为0才继续执行
+			System.out.println("其他任务结束,开始干活" + flag);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
